@@ -2,7 +2,6 @@
 
 namespace Sourcebox\OpeningHours;
 
-
 class TimePeriod
 {
     /**

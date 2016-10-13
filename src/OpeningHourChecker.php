@@ -39,7 +39,7 @@ class OpeningHourChecker
      * @param \DateTime $dateTime
      * @return bool
      */
-    public function isOpenAt(\DateTime $dateTime) : bool 
+    public function isOpenAt(\DateTime $dateTime) : bool
     {
         $day = $this->openingHours->getDay($dateTime->format('N'));
 
@@ -48,13 +48,26 @@ class OpeningHourChecker
         }
 
         foreach ($day->getTimePeriods() as $timePeriod) {
-            $from = \DateTime::createFromFormat('Y-m-d H:i:s', $dateTime->format(sprintf('Y-m-d %s:00', $timePeriod->getFrom())));
-            $until = \DateTime::createFromFormat('Y-m-d H:i:s', $dateTime->format(sprintf('Y-m-d %s:00', $timePeriod->getFrom())));
-            if ($dateTime >= $from && $dateTime <= $until) {
+            if ($dateTime >= $this->getDateAtHour($dateTime, $timePeriod->getFrom())
+                && $dateTime <= $this->getDateAtHour($dateTime, $timePeriod->getUntil())
+            ) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * @param \DateTime $date
+     * @param string $hour
+     * @return \DateTime
+     */
+    public function getDateAtHour(\DateTime $date, string $hour) : \DateTime
+    {
+        return \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            $date->format(sprintf('Y-m-d %s:00', $hour)
+        ));
     }
 }
