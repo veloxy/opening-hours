@@ -2,6 +2,10 @@
 
 namespace Sourcebox\OpeningHours;
 
+/**
+ * Class TimePeriod
+ * @package Sourcebox\OpeningHours
+ */
 class TimePeriod
 {
     /**

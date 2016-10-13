@@ -1,0 +1,22 @@
+{
+    "name": "sourcebox/opening-hours",
+    "description": "Check opening hours",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Sourcebox\\OpeningHours\\": "src"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kevin Vandenborne",
+            "email": "kevin.vandenborne@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.6"
+    }
+}

@@ -10,11 +10,22 @@ class OpeningHours
     private $days;
 
     /**
+     * @var \DateTimeZone
+     */
+    private $timezone;
+
+    /**
      * OpeningHours constructor.
      * @param array $days
+     * @param \DateTimeZone $timezone
      */
-    public function __construct(array $days)
+    public function __construct(array $days, \DateTimeZone $timezone = null)
     {
+        if (!$timezone) {
+            $timezone = new \DateTimeZone(date_default_timezone_get());
+        }
+
+        $this->timezone = $timezone;
         $this->setDays($days);
     }
 
@@ -50,5 +61,24 @@ class OpeningHours
         }
 
         return null;
+    }
+
+    /**
+     * @return \DateTimeZone
+     */
+    public function getTimezone(): \DateTimeZone
+    {
+        return $this->timezone;
+    }
+
+    /**
+     * @param \DateTimeZone $timezone
+     * @return OpeningHours
+     */
+    public function setTimezone(\DateTimeZone $timezone): OpeningHours
+    {
+        $this->timezone = $timezone;
+
+        return $this;
     }
 }
