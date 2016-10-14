@@ -2,6 +2,8 @@
 
 namespace Sourcebox\OpeningHours;
 
+use Sourcebox\OpeningHours\Exception\HolidayException;
+
 class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsOpenOnDay()
@@ -34,7 +36,7 @@ class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($openingHourChecker->isClosedOn(Day::SUNDAY));
     }
 
-    public function testIsOpenAt()
+    public function testIsOpenAtIsClosedAt()
     {
         $timezone = new \DateTimeZone('Europe/Brussels');
 
@@ -60,6 +62,14 @@ class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($openingHourChecker->isOpenAt(
             \DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-10 05:00:00', $timezone)
+        ));
+
+        $this->assertFalse($openingHourChecker->isOpenAt(
+            \DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-11 05:00:00', $timezone)
+        ));
+
+        $this->assertTrue($openingHourChecker->isClosedAt(
+            \DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-11 05:00:00', $timezone)
         ));
     }
 
@@ -110,5 +120,58 @@ class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
         ]));
 
         $this->assertEquals($timePeriods, $openingHourChecker->getOpeningHoursForDay(Day::MONDAY));
+        $this->assertEquals([], $openingHourChecker->getOpeningHoursForDay(Day::TUESDAY));
+    }
+
+    public function testGetOpeningHours()
+    {
+        $openingHours = new OpeningHours([
+            new Day(Day::MONDAY, [
+                new TimePeriod('08:00', '12:00'),
+                new TimePeriod('15:00', '17:00'),
+            ]),
+        ]);
+
+        $openingHourChecker = new OpeningHourChecker($openingHours);
+        $this->assertEquals($openingHours, $openingHourChecker->getOpeningHours());
+
+        $openingHourChecker->setOpeningHours(new OpeningHours([]));
+        $this->assertEquals(new OpeningHours([]), $openingHourChecker->getOpeningHours());
+    }
+
+    public function testGetSetAddExceptions()
+    {
+        $exception = new HolidayException(new \DateTime('now'));
+        $openingHourChecker = new OpeningHourChecker(new OpeningHours([]));
+        $openingHourChecker->addException($exception);
+
+        $this->assertEquals([$exception], $openingHourChecker->getExceptions());
+
+        $exceptions = [
+            $exception,
+            $exception,
+        ];
+
+        $openingHourChecker->setExceptions($exceptions);
+        $this->assertEquals($exceptions, $openingHourChecker->getExceptions());
+    }
+
+    public function testHasExceptionsHoliday()
+    {
+        $timezone = new \DateTimeZone('Europe/Brussels');
+        $openingHourChecker = new OpeningHourChecker(new OpeningHours([
+            new Day(Day::SUNDAY, [
+                new TimePeriod('08:00', '12:00'),
+            ]),
+        ], $timezone));
+
+        $christmasDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', '2016-12-25 10:00:00', $timezone);
+        $randomSunday = \DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-16 10:00:00', $timezone);
+
+        $openingHourChecker->addException(new HolidayException($randomSunday));
+        $this->assertTrue($openingHourChecker->isOpenAt($christmasDateTime));
+
+        $openingHourChecker->addException(new HolidayException($christmasDateTime));
+        $this->assertFalse($openingHourChecker->isOpenAt($christmasDateTime));
     }
 }

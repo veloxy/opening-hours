@@ -2,6 +2,8 @@
 
 namespace Sourcebox\OpeningHours;
 
+use Sourcebox\OpeningHours\Exception\ExceptionInterface;
+
 /**
  * Class OpeningHourChecker
  * @package Sourcebox\OpeningHours
@@ -12,6 +14,11 @@ class OpeningHourChecker
      * @var OpeningHours
      */
     private $openingHours;
+
+    /**
+     * @var ExceptionInterface[]
+     */
+    private $exceptions = [];
 
     /**
      * OpeningHourChecker constructor.
@@ -63,6 +70,10 @@ class OpeningHourChecker
         $day = $this->openingHours->getDay($dateTime->format('N'));
 
         if (!$day instanceof Day || !$day->getTimePeriods()) {
+            return false;
+        }
+
+        if ($this->hasExceptions($dateTime)) {
             return false;
         }
 
@@ -132,5 +143,64 @@ class OpeningHourChecker
         }
 
         return [];
+    }
+
+    /**
+     * @return OpeningHours
+     */
+    public function getOpeningHours(): OpeningHours
+    {
+        return $this->openingHours;
+    }
+
+    /**
+     * @param OpeningHours $openingHours
+     * @return OpeningHourChecker
+     */
+    public function setOpeningHours(OpeningHours $openingHours): OpeningHourChecker
+    {
+        $this->openingHours = $openingHours;
+
+        return $this;
+    }
+
+    /**
+     * Checks if datetime has exceptions.
+     * @param \DateTime $dateTime
+     * @return bool
+     */
+    public function hasExceptions(\DateTime $dateTime)
+    {
+        foreach ($this->exceptions as $exception) {
+            if ($exception->isException($dateTime)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return ExceptionInterface[]
+     */
+    public function getExceptions(): array
+    {
+        return $this->exceptions;
+    }
+
+    /**
+     * @param ExceptionInterface[] $exceptions
+     * @return OpeningHourChecker
+     */
+    public function setExceptions(array $exceptions): OpeningHourChecker
+    {
+        $this->exceptions = $exceptions;
+
+        return $this;
+    }
+
+    public function addException(ExceptionInterface $exception)
+    {
+        $this->exceptions[] = $exception;
     }
 }
