@@ -199,6 +199,9 @@ class OpeningHourChecker
         return $this;
     }
 
+    /**
+     * @param ExceptionInterface $exception
+     */
     public function addException(ExceptionInterface $exception)
     {
         $this->exceptions[] = $exception;

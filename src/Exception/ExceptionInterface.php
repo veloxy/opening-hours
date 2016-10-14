@@ -2,7 +2,6 @@
 
 namespace Sourcebox\OpeningHours\Exception;
 
-
 interface ExceptionInterface
 {
     /**

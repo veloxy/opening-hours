@@ -2,7 +2,6 @@
 
 namespace Sourcebox\OpeningHours\Exception;
 
-
 class HolidayException implements ExceptionInterface
 {
     /**

@@ -2,8 +2,6 @@
 
 namespace Sourcebox\OpeningHours;
 
-use Sourcebox\OpeningHours\Exception\ExceptionInterface;
-
 class OpeningHours
 {
     /**

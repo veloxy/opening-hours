@@ -155,23 +155,4 @@ class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
         $openingHourChecker->setExceptions($exceptions);
         $this->assertEquals($exceptions, $openingHourChecker->getExceptions());
     }
-
-    public function testHasExceptionsHoliday()
-    {
-        $timezone = new \DateTimeZone('Europe/Brussels');
-        $openingHourChecker = new OpeningHourChecker(new OpeningHours([
-            new Day(Day::SUNDAY, [
-                new TimePeriod('08:00', '12:00'),
-            ]),
-        ], $timezone));
-
-        $christmasDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', '2016-12-25 10:00:00', $timezone);
-        $randomSunday = \DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-16 10:00:00', $timezone);
-
-        $openingHourChecker->addException(new HolidayException($randomSunday));
-        $this->assertTrue($openingHourChecker->isOpenAt($christmasDateTime));
-
-        $openingHourChecker->addException(new HolidayException($christmasDateTime));
-        $this->assertFalse($openingHourChecker->isOpenAt($christmasDateTime));
-    }
 }
