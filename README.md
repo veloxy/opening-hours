@@ -42,10 +42,14 @@ $openingHourChecker = new OpeningHourChecker(new OpeningHours([
 ]));
 
 $openingHourChecker->isOpenOn(Day::TUESDAY); // true
-$openingHourChecker->isOpenOn(Day::SUNDAY); // true
+$openingHourChecker->isOpenOn(Day::SUNDAY); // false
 
 # 2016-10-10 is on a monday.
 $openingHourChecker->isOpenAt(
     \DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-10 10:00:00')
 )); // returns true
+
+$openingHourChecker->isOpenAt(
+    \DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-10 12:30:00')
+)); // returns false
 ```
