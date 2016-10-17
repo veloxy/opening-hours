@@ -2,7 +2,7 @@
 
 namespace Sourcebox\OpeningHours;
 
-use Sourcebox\OpeningHours\Exclusion\ExclusionInterface;
+use Sourcebox\OpeningHours\Override\OverrideInterface;
 
 /**
  * Class OpeningHourChecker
@@ -16,9 +16,9 @@ class OpeningHourChecker
     private $openingHours;
 
     /**
-     * @var ExclusionInterface[]
+     * @var OverrideInterface[]
      */
-    private $exclusions = [];
+    private $overrides = [];
 
     /**
      * OpeningHourChecker constructor.
@@ -73,8 +73,10 @@ class OpeningHourChecker
             return false;
         }
 
-        if ($this->isExcluded($dateTime)) {
+        if ($this->isOverridden($dateTime, OverrideInterface::TYPE_EXCLUDE)) {
             return false;
+        } elseif ($this->isOverridden($dateTime, OverrideInterface::TYPE_INCLUDE)) {
+            return true;
         }
 
         foreach ($day->getTimePeriods() as $timePeriod) {
@@ -166,13 +168,16 @@ class OpeningHourChecker
 
     /**
      * Checks if datetime has exclusion.
+     *
      * @param \DateTime $dateTime
+     * @param string $type
+     *
      * @return bool
      */
-    public function isExcluded(\DateTime $dateTime)
+    public function isOverridden(\DateTime $dateTime, string $type)
     {
-        foreach ($this->exclusions as $exclusion) {
-            if ($exclusion->isExcluded($dateTime)) {
+        foreach ($this->overrides as $override) {
+            if ($override->getType() === $type && $override->isOverridden($dateTime)) {
                 return true;
             }
         }
@@ -181,29 +186,30 @@ class OpeningHourChecker
     }
 
     /**
-     * @return ExclusionInterface[]
+     * @return OverrideInterface[]
      */
-    public function getExclusions(): array
+    public function getOverrides(): array
     {
-        return $this->exclusions;
+        return $this->overrides;
     }
 
     /**
-     * @param ExclusionInterface[] $exclusions
+     * @param OverrideInterface[] $overrides
+     *
      * @return OpeningHourChecker
      */
-    public function setExclusions(array $exclusions): OpeningHourChecker
+    public function setOverrides(array $overrides): OpeningHourChecker
     {
-        $this->exclusions = $exclusions;
+        $this->overrides = $overrides;
 
         return $this;
     }
 
     /**
-     * @param ExclusionInterface $exclusion
+     * @param OverrideInterface $override
      */
-    public function addExclusion(ExclusionInterface $exclusion)
+    public function addOverride(OverrideInterface $override)
     {
-        $this->exclusions[] = $exclusion;
+        $this->overrides[] = $override;
     }
 }

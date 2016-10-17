@@ -2,7 +2,7 @@
 
 namespace Sourcebox\OpeningHours;
 
-use Sourcebox\OpeningHours\Exclusion\HolidayExclusion;
+use Sourcebox\OpeningHours\Override\DateOverride;
 
 class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
 {
@@ -139,20 +139,20 @@ class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new OpeningHours([]), $openingHourChecker->getOpeningHours());
     }
 
-    public function testGetSetAddExclusions()
+    public function testGetSetAddOverrides()
     {
-        $exclusion = new HolidayExclusion(new \DateTime('now'));
+        $override = new DateOverride(new \DateTime('now'));
         $openingHourChecker = new OpeningHourChecker(new OpeningHours([]));
-        $openingHourChecker->addExclusion($exclusion);
+        $openingHourChecker->addOverride($override);
 
-        $this->assertEquals([$exclusion], $openingHourChecker->getExclusions());
+        $this->assertEquals([$override], $openingHourChecker->getOverrides());
 
-        $exclusions = [
-            $exclusion,
-            $exclusion,
+        $overrides = [
+            $override,
+            $override,
         ];
 
-        $openingHourChecker->setExclusions($exclusions);
-        $this->assertEquals($exclusions, $openingHourChecker->getExclusions());
+        $openingHourChecker->setOverrides($overrides);
+        $this->assertEquals($overrides, $openingHourChecker->getOverrides());
     }
 }
