@@ -1,6 +1,6 @@
 <?php
 
-namespace Sourcebox\OpeningHours\Exception;
+namespace Sourcebox\OpeningHours\Exclusion;
 
 use Sourcebox\OpeningHours\Day;
 use Sourcebox\OpeningHours\OpeningHourChecker;
@@ -51,9 +51,9 @@ class HolidayPeriodExceptionTest extends \PHPUnit_Framework_TestCase
 
         $holidayPeriodStart = \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-01 00:00:00', $timezone);
         $holidayPeriodEnd = \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-10 00:00:00', $timezone);
-        $holidayPeriod = new HolidayPeriodException($holidayPeriodStart, $holidayPeriodEnd);
+        $holidayPeriod = new HolidayPeriodExclusion($holidayPeriodStart, $holidayPeriodEnd);
 
-        $openingHourChecker->addException($holidayPeriod);
+        $openingHourChecker->addExclusion($holidayPeriod);
 
         $this->assertEquals($expected, $openingHourChecker->isOpenAt($check));
     }
@@ -69,8 +69,8 @@ class HolidayPeriodExceptionTest extends \PHPUnit_Framework_TestCase
 
         $holidayPeriodStart = \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-01 00:00:00', $timezone);
         $holidayPeriodEnd = \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-10 00:00:00', $timezone);
-        $holidayPeriodException = new HolidayPeriodException($holidayPeriodStart, $holidayPeriodEnd);
+        $holidayPeriodExclusion = new HolidayPeriodExclusion($holidayPeriodStart, $holidayPeriodEnd);
 
-        $this->assertEquals($expected, !$holidayPeriodException->isException($check));
+        $this->assertEquals($expected, !$holidayPeriodExclusion->isExcluded($check));
     }
 }

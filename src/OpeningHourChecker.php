@@ -2,7 +2,7 @@
 
 namespace Sourcebox\OpeningHours;
 
-use Sourcebox\OpeningHours\Exception\ExceptionInterface;
+use Sourcebox\OpeningHours\Exclusion\ExclusionInterface;
 
 /**
  * Class OpeningHourChecker
@@ -16,9 +16,9 @@ class OpeningHourChecker
     private $openingHours;
 
     /**
-     * @var ExceptionInterface[]
+     * @var ExclusionInterface[]
      */
-    private $exceptions = [];
+    private $exclusions = [];
 
     /**
      * OpeningHourChecker constructor.
@@ -73,7 +73,7 @@ class OpeningHourChecker
             return false;
         }
 
-        if ($this->hasExceptions($dateTime)) {
+        if ($this->isExcluded($dateTime)) {
             return false;
         }
 
@@ -165,14 +165,14 @@ class OpeningHourChecker
     }
 
     /**
-     * Checks if datetime has exceptions.
+     * Checks if datetime has exclusion.
      * @param \DateTime $dateTime
      * @return bool
      */
-    public function hasExceptions(\DateTime $dateTime)
+    public function isExcluded(\DateTime $dateTime)
     {
-        foreach ($this->exceptions as $exception) {
-            if ($exception->isException($dateTime)) {
+        foreach ($this->exclusions as $exclusion) {
+            if ($exclusion->isExcluded($dateTime)) {
                 return true;
             }
         }
@@ -181,29 +181,29 @@ class OpeningHourChecker
     }
 
     /**
-     * @return ExceptionInterface[]
+     * @return ExclusionInterface[]
      */
-    public function getExceptions(): array
+    public function getExclusions(): array
     {
-        return $this->exceptions;
+        return $this->exclusions;
     }
 
     /**
-     * @param ExceptionInterface[] $exceptions
+     * @param ExclusionInterface[] $exclusions
      * @return OpeningHourChecker
      */
-    public function setExceptions(array $exceptions): OpeningHourChecker
+    public function setExclusions(array $exclusions): OpeningHourChecker
     {
-        $this->exceptions = $exceptions;
+        $this->exclusions = $exclusions;
 
         return $this;
     }
 
     /**
-     * @param ExceptionInterface $exception
+     * @param ExclusionInterface $exclusion
      */
-    public function addException(ExceptionInterface $exception)
+    public function addExclusion(ExclusionInterface $exclusion)
     {
-        $this->exceptions[] = $exception;
+        $this->exclusions[] = $exclusion;
     }
 }

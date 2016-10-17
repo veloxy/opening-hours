@@ -1,12 +1,12 @@
 <?php
 
-namespace Sourcebox\OpeningHours\Exception;
+namespace Sourcebox\OpeningHours\Exclusion;
 
 /**
- * Class HolidayPeriodException
- * @package Sourcebox\OpeningHours\Exception
+ * Class HolidayPeriodExclusion
+ * @package Sourcebox\OpeningHours\Exclusion
  */
-class HolidayPeriodException implements ExceptionInterface
+class HolidayPeriodExclusion implements ExclusionInterface
 {
     /**
      * @var \DateTime
@@ -19,7 +19,7 @@ class HolidayPeriodException implements ExceptionInterface
     private $endDateTime;
 
     /**
-     * HolidayPeriodException constructor.
+     * HolidayPeriodExclusion constructor.
      * @param \DateTime $startDateTime
      * @param \DateTime $endDateTime
      */
@@ -32,7 +32,7 @@ class HolidayPeriodException implements ExceptionInterface
     /**
      * {@inheritdoc}
      */
-    public function isException(\DateTime $dateTime) : bool
+    public function isExcluded(\DateTime $dateTime) : bool
     {
         if ($dateTime >= $this->startDateTime && $dateTime <= $this->endDateTime) {
             return true;

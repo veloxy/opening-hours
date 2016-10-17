@@ -1,8 +1,8 @@
 <?php
 
-namespace Sourcebox\OpeningHours\Exception;
+namespace Sourcebox\OpeningHours\Exclusion;
 
-class HolidayException implements ExceptionInterface
+class HolidayExclusion implements ExclusionInterface
 {
     /**
      * @var \DateTime
@@ -10,7 +10,7 @@ class HolidayException implements ExceptionInterface
     public $holidayDateTime;
 
     /**
-     * HolidayException constructor.
+     * HolidayExclusion constructor.
      * @param $holidayDateTime
      */
     public function __construct(\DateTime $holidayDateTime)
@@ -19,10 +19,9 @@ class HolidayException implements ExceptionInterface
     }
 
     /**
-     * @param \DateTime $dateTime
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isException(\DateTime $dateTime) : bool
+    public function isExcluded(\DateTime $dateTime) : bool
     {
         if ($dateTime->format('Y-m-d') == $this->holidayDateTime->format('Y-m-d')) {
             return true;

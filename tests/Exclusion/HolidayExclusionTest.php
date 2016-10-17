@@ -1,13 +1,13 @@
 <?php
 
-namespace Sourcebox\OpeningHours\Exception;
+namespace Sourcebox\OpeningHours\Exclusion;
 
 use Sourcebox\OpeningHours\Day;
 use Sourcebox\OpeningHours\OpeningHourChecker;
 use Sourcebox\OpeningHours\OpeningHours;
 use Sourcebox\OpeningHours\TimePeriod;
 
-class HolidayExceptionTest extends \PHPUnit_Framework_TestCase
+class HolidayExclusionTest extends \PHPUnit_Framework_TestCase
 {
     public function testClosedOnHoliday()
     {
@@ -23,22 +23,22 @@ class HolidayExceptionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($openingHourChecker->isOpenAt($christmasDateTime));
 
-        $openingHourChecker->addException(new HolidayException($christmasDateTime));
+        $openingHourChecker->addExclusion(new HolidayExclusion($christmasDateTime));
         $this->assertFalse($openingHourChecker->isOpenAt($christmasDateTime));
     }
 
     public function testIsHoliday()
     {
         $holidayDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', '2016-12-25 10:00:00');
-        $holidayException = new HolidayException($holidayDateTime);
-        $this->assertTrue($holidayException->isException($holidayDateTime));
+        $holidayExclusion = new HolidayExclusion($holidayDateTime);
+        $this->assertTrue($holidayExclusion->isExcluded($holidayDateTime));
     }
 
     public function testIsNotHoliday()
     {
         $holidayDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', '2016-12-25 10:00:00');
-        $holidayException = new HolidayException($holidayDateTime);
+        $holidayExclusion = new HolidayExclusion($holidayDateTime);
         $testDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', '2016-12-26 10:00:00');
-        $this->assertFalse($holidayException->isException($testDateTime));
+        $this->assertFalse($holidayExclusion->isExcluded($testDateTime));
     }
 }
