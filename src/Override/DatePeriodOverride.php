@@ -1,12 +1,12 @@
 <?php
 
-namespace Sourcebox\OpeningHours\Exclusion;
+namespace Sourcebox\OpeningHours\Override;
 
 /**
- * Class HolidayPeriodExclusion
- * @package Sourcebox\OpeningHours\Exclusion
+ * Class DatePeriodOverride
+ * @package Sourcebox\TimeTable\Override
  */
-class HolidayPeriodExclusion implements ExclusionInterface
+class DatePeriodOverride implements OverrideInterface
 {
     /**
      * @var \DateTime
@@ -19,7 +19,12 @@ class HolidayPeriodExclusion implements ExclusionInterface
     private $endDateTime;
 
     /**
-     * HolidayPeriodExclusion constructor.
+     * @var string
+     */
+    private $type;
+
+    /**
+     * DatePeriodOverride constructor.
      * @param \DateTime $startDateTime
      * @param \DateTime $endDateTime
      */
@@ -32,12 +37,30 @@ class HolidayPeriodExclusion implements ExclusionInterface
     /**
      * {@inheritdoc}
      */
-    public function isExcluded(\DateTime $dateTime) : bool
+    public function isOverridden(\DateTime $dateTime) : bool
     {
         if ($dateTime >= $this->startDateTime && $dateTime <= $this->endDateTime) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Returns the type of override.
+     *
+     * @return string
+     */
+    public function getType() : string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type)
+    {
+        $this->type = $type;
     }
 }

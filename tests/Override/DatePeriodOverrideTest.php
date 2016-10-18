@@ -1,13 +1,13 @@
 <?php
 
-namespace Sourcebox\OpeningHours\Exclusion;
+namespace Sourcebox\OpeningHours\Override;
 
 use Sourcebox\OpeningHours\Day;
-use Sourcebox\OpeningHours\OpeningHourChecker;
-use Sourcebox\OpeningHours\OpeningHours;
+use Sourcebox\OpeningHours\Checker\OpeningHourChecker;
+use Sourcebox\OpeningHours\TimeTable;
 use Sourcebox\OpeningHours\TimePeriod;
 
-class HolidayPeriodExceptionTest extends \PHPUnit_Framework_TestCase
+class DatePeriodOverrideTest extends \PHPUnit_Framework_TestCase
 {
     public function holidayPeriodDataProvider()
     {
@@ -39,7 +39,7 @@ class HolidayPeriodExceptionTest extends \PHPUnit_Framework_TestCase
     {
         $timezone = new \DateTimeZone('Europe/Brussels');
 
-        $openingHourChecker = new OpeningHourChecker(new OpeningHours([
+        $openingHourChecker = new OpeningHourChecker(new TimeTable([
             new Day(Day::SUNDAY, [new TimePeriod('00:00', '24:00')]),
             new Day(Day::MONDAY, [new TimePeriod('00:00', '24:00')]),
             new Day(Day::TUESDAY, [new TimePeriod('00:00', '24:00')]),
@@ -51,9 +51,10 @@ class HolidayPeriodExceptionTest extends \PHPUnit_Framework_TestCase
 
         $holidayPeriodStart = \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-01 00:00:00', $timezone);
         $holidayPeriodEnd = \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-10 00:00:00', $timezone);
-        $holidayPeriod = new HolidayPeriodExclusion($holidayPeriodStart, $holidayPeriodEnd);
+        $holidayPeriod = new DatePeriodOverride($holidayPeriodStart, $holidayPeriodEnd);
+        $holidayPeriod->setType(OverrideInterface::TYPE_EXCLUDE);
 
-        $openingHourChecker->addExclusion($holidayPeriod);
+        $openingHourChecker->addOverride($holidayPeriod);
 
         $this->assertEquals($expected, $openingHourChecker->isOpenAt($check));
     }
@@ -69,8 +70,9 @@ class HolidayPeriodExceptionTest extends \PHPUnit_Framework_TestCase
 
         $holidayPeriodStart = \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-01 00:00:00', $timezone);
         $holidayPeriodEnd = \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-10 00:00:00', $timezone);
-        $holidayPeriodExclusion = new HolidayPeriodExclusion($holidayPeriodStart, $holidayPeriodEnd);
+        $holidayPeriodExclusion = new DatePeriodOverride($holidayPeriodStart, $holidayPeriodEnd);
+        $holidayPeriodExclusion->setType(OverrideInterface::TYPE_EXCLUDE);
 
-        $this->assertEquals($expected, !$holidayPeriodExclusion->isExcluded($check));
+        $this->assertEquals($expected, !$holidayPeriodExclusion->isOverridden($check));
     }
 }
