@@ -7,7 +7,6 @@ use Sourcebox\OpeningHours\Checker\OpeningHourChecker;
 use Sourcebox\OpeningHours\TimeTable;
 use Sourcebox\OpeningHours\TimePeriod;
 
-
 class DateOverrideTest extends \PHPUnit_Framework_TestCase
 {
     public function testClosedOnHoliday()
