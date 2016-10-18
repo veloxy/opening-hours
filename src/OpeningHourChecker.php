@@ -6,12 +6,12 @@ use Sourcebox\OpeningHours\Override\OverrideInterface;
 
 /**
  * Class OpeningHourChecker
- * @package Sourcebox\OpeningHours
+ * @package Sourcebox\TimeTable
  */
 class OpeningHourChecker
 {
     /**
-     * @var OpeningHours
+     * @var TimeTable
      */
     private $openingHours;
 
@@ -22,9 +22,10 @@ class OpeningHourChecker
 
     /**
      * OpeningHourChecker constructor.
-     * @param OpeningHours $openingHours
+     *
+     * @param TimeTable $openingHours
      */
-    public function __construct(OpeningHours $openingHours)
+    public function __construct(TimeTable $openingHours)
     {
         $this->openingHours = $openingHours;
     }
@@ -148,18 +149,19 @@ class OpeningHourChecker
     }
 
     /**
-     * @return OpeningHours
+     * @return TimeTable
      */
-    public function getOpeningHours(): OpeningHours
+    public function getOpeningHours(): TimeTable
     {
         return $this->openingHours;
     }
 
     /**
-     * @param OpeningHours $openingHours
+     * @param TimeTable $openingHours
+     *
      * @return OpeningHourChecker
      */
-    public function setOpeningHours(OpeningHours $openingHours): OpeningHourChecker
+    public function setOpeningHours(TimeTable $openingHours): OpeningHourChecker
     {
         $this->openingHours = $openingHours;
 

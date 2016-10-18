@@ -2,7 +2,7 @@
 
 namespace Sourcebox\OpeningHours;
 
-class OpeningHours
+class TimeTable
 {
     /**
      * @var Day[]
@@ -15,7 +15,7 @@ class OpeningHours
     private $timezone;
 
     /**
-     * OpeningHours constructor.
+     * TimeTable constructor.
      * @param array $days
      * @param \DateTimeZone $timezone
      */
@@ -39,9 +39,10 @@ class OpeningHours
 
     /**
      * @param Day[] $days
-     * @return OpeningHours
+     *
+     * @return TimeTable
      */
-    public function setDays(array $days): OpeningHours
+    public function setDays(array $days): TimeTable
     {
         foreach ($days as $day) {
             $this->days[$day->getNumber()] = $day;
@@ -73,9 +74,10 @@ class OpeningHours
 
     /**
      * @param \DateTimeZone $timezone
-     * @return OpeningHours
+     *
+     * @return TimeTable
      */
-    public function setTimezone(\DateTimeZone $timezone): OpeningHours
+    public function setTimezone(\DateTimeZone $timezone): TimeTable
     {
         $this->timezone = $timezone;
 

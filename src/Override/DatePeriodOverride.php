@@ -4,7 +4,7 @@ namespace Sourcebox\OpeningHours\Override;
 
 /**
  * Class DatePeriodOverride
- * @package Sourcebox\OpeningHours\Override
+ * @package Sourcebox\TimeTable\Override
  */
 class DatePeriodOverride implements OverrideInterface
 {

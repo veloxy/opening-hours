@@ -4,7 +4,7 @@ namespace Sourcebox\OpeningHours\Override;
 
 use Sourcebox\OpeningHours\Day;
 use Sourcebox\OpeningHours\OpeningHourChecker;
-use Sourcebox\OpeningHours\OpeningHours;
+use Sourcebox\OpeningHours\TimeTable;
 use Sourcebox\OpeningHours\TimePeriod;
 
 class DatePeriodOverrideTest extends \PHPUnit_Framework_TestCase
@@ -39,7 +39,7 @@ class DatePeriodOverrideTest extends \PHPUnit_Framework_TestCase
     {
         $timezone = new \DateTimeZone('Europe/Brussels');
 
-        $openingHourChecker = new OpeningHourChecker(new OpeningHours([
+        $openingHourChecker = new OpeningHourChecker(new TimeTable([
             new Day(Day::SUNDAY, [new TimePeriod('00:00', '24:00')]),
             new Day(Day::MONDAY, [new TimePeriod('00:00', '24:00')]),
             new Day(Day::TUESDAY, [new TimePeriod('00:00', '24:00')]),

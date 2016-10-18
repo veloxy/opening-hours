@@ -15,7 +15,7 @@ This package is not yet submitted to composer because it is still in development
 You can easily figure out the usage by checking out the tests, but here's a quick example:
 
 ```php
-$openingHourChecker = new OpeningHourChecker(new OpeningHours([
+$openingHourChecker = new OpeningHourChecker(new TimeTable([
     new Day(Day::MONDAY, [
         new TimePeriod('08:00', '12:00'),
         new TimePeriod('13:00', '17:00'),
