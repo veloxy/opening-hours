@@ -3,9 +3,10 @@
 namespace Sourcebox\OpeningHours\Override;
 
 use Sourcebox\OpeningHours\Day;
-use Sourcebox\OpeningHours\OpeningHourChecker;
+use Sourcebox\OpeningHours\Checker\OpeningHourChecker;
 use Sourcebox\OpeningHours\TimeTable;
 use Sourcebox\OpeningHours\TimePeriod;
+
 
 class DateOverrideTest extends \PHPUnit_Framework_TestCase
 {

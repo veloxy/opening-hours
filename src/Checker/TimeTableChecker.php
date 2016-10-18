@@ -1,9 +1,17 @@
 <?php
 
-namespace Sourcebox\OpeningHours;
+namespace Sourcebox\OpeningHours\Checker;
 
+use Sourcebox\OpeningHours\Day;
+use Sourcebox\OpeningHours\Override;
 use Sourcebox\OpeningHours\Override\OverrideInterface;
+use Sourcebox\OpeningHours\TimePeriod;
+use Sourcebox\OpeningHours\TimeTable;
 
+/**
+ * Class TimeTableChecker
+ * @package Sourcebox\OpeningHours\Checker
+ */
 class TimeTableChecker
 {
     /**
@@ -145,7 +153,9 @@ class TimeTableChecker
         list($hours, $minutes) = explode(':', $time);
 
         $dateTime = \DateTime::createFromFormat(
-            'Y-m-d H:i:s', $dateTime->format('Y-m-d H:i:s'), $this->getTimeTable()->getTimezone()
+            'Y-m-d H:i:s',
+            $dateTime->format('Y-m-d H:i:s'),
+            $this->getTimeTable()->getTimezone()
         );
 
         $dateTime->setTime($hours, $minutes, 0);

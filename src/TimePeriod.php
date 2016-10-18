@@ -4,7 +4,7 @@ namespace Sourcebox\OpeningHours;
 
 /**
  * Class TimePeriod
- * @package Sourcebox\TimeTable
+ * @package Sourcebox\OpeningHours
  */
 class TimePeriod
 {

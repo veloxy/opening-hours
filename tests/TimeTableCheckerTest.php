@@ -2,6 +2,8 @@
 
 namespace Sourcebox\OpeningHours;
 
+use Sourcebox\OpeningHours\Checker\TimeTableChecker;
+
 class TimeTableCheckerTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetSetTimeTable()

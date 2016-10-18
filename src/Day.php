@@ -2,6 +2,10 @@
 
 namespace Sourcebox\OpeningHours;
 
+/**
+ * Class Day
+ * @package Sourcebox\OpeningHours
+ */
 class Day
 {
     const MONDAY = 1;

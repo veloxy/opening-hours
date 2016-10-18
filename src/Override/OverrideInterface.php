@@ -2,10 +2,13 @@
 
 namespace Sourcebox\OpeningHours\Override;
 
+/**
+ * Interface OverrideInterface
+ * @package Sourcebox\OpeningHours\Override
+ */
 interface OverrideInterface
 {
     const TYPE_INCLUDE = 'include';
-
     const TYPE_EXCLUDE = 'exclude';
 
     /**

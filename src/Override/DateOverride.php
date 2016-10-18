@@ -2,6 +2,10 @@
 
 namespace Sourcebox\OpeningHours\Override;
 
+/**
+ * Class DateOverride
+ * @package Sourcebox\OpeningHours\Override
+ */
 class DateOverride implements OverrideInterface
 {
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Sourcebox\OpeningHours;
+namespace Sourcebox\OpeningHours\Checker;
 
 use Sourcebox\OpeningHours\Override\OverrideInterface;
 

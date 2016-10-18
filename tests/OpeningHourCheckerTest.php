@@ -2,6 +2,7 @@
 
 namespace Sourcebox\OpeningHours;
 
+use Sourcebox\OpeningHours\Checker\OpeningHourChecker;
 use Sourcebox\OpeningHours\Override\DateOverride;
 
 class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase

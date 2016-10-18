@@ -2,6 +2,10 @@
 
 namespace Sourcebox\OpeningHours;
 
+/**
+ * Class TimeTable
+ * @package Sourcebox\OpeningHours
+ */
 class TimeTable
 {
     /**
