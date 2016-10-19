@@ -41,10 +41,10 @@ class Day
     }
 
     /**
-     * @param string $number
+     * @param int $number
      * @return Day
      */
-    public function setNumber(string $number): Day
+    public function setNumber(int $number): Day
     {
         $this->number = $number;
 
