@@ -1,10 +1,12 @@
 <?php
 
-namespace Sourcebox\OpeningHours;
+namespace Sourcebox\OpeningHours\Checker;
 
-use Sourcebox\OpeningHours\Checker\OpeningHourChecker;
+use Sourcebox\OpeningHours\Day;
 use Sourcebox\OpeningHours\Override\DateOverride;
 use Sourcebox\OpeningHours\Override\OverrideInterface;
+use Sourcebox\OpeningHours\TimePeriod;
+use Sourcebox\OpeningHours\TimeTable;
 
 class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
 {
@@ -88,8 +90,9 @@ class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider issOpenAtIsClosedAtWithOverrideDataProvider
      *
-     * @param $expected
      * @param $dateTime
+     * @param $type
+     * @param $expected
      */
     public function testIsOpenAtIsClosedAtWithOverride($dateTime, $type, $expected)
     {

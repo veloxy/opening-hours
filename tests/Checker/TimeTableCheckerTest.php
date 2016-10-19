@@ -1,8 +1,10 @@
 <?php
 
-namespace Sourcebox\OpeningHours;
+namespace Sourcebox\OpeningHours\Checker;
 
-use Sourcebox\OpeningHours\Checker\TimeTableChecker;
+use Sourcebox\OpeningHours\Day;
+use Sourcebox\OpeningHours\TimePeriod;
+use Sourcebox\OpeningHours\TimeTable;
 
 class TimeTableCheckerTest extends \PHPUnit_Framework_TestCase
 {
