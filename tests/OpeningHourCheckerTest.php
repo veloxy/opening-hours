@@ -4,6 +4,7 @@ namespace Sourcebox\OpeningHours;
 
 use Sourcebox\OpeningHours\Checker\OpeningHourChecker;
 use Sourcebox\OpeningHours\Override\DateOverride;
+use Sourcebox\OpeningHours\Override\OverrideInterface;
 
 class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,7 +38,7 @@ class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($openingHourChecker->isClosedOn(Day::SUNDAY));
     }
 
-    public function isOpenIsClosedDataProvider()
+    public function isOpenAtIsClosedAtDataProvider()
     {
         return [
             [\DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-10 10:00:00'), true], # Monday
@@ -49,7 +50,8 @@ class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider isOpenIsClosedDataProvider
+     * @dataProvider isOpenAtIsClosedAtDataProvider
+     *
      * @param $expected
      * @param $dateTime
      */
@@ -64,6 +66,48 @@ class OpeningHourCheckerTest extends \PHPUnit_Framework_TestCase
         ]));
 
         $this->assertEquals($expected, $openingHourChecker->isOpenAt($dateTime));
+        $this->assertEquals(!$expected, $openingHourChecker->isClosedAt($dateTime));
+    }
+
+    public function issOpenAtIsClosedAtWithOverrideDataProvider()
+    {
+        return [
+            [
+                \DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-10 10:00:00'),
+                OverrideInterface::TYPE_INCLUDE,
+                true
+            ],
+            [
+                \DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-10 10:00:00'),
+                OverrideInterface::TYPE_EXCLUDE,
+                false
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider issOpenAtIsClosedAtWithOverrideDataProvider
+     *
+     * @param $expected
+     * @param $dateTime
+     */
+    public function testIsOpenAtIsClosedAtWithOverride($dateTime, $type, $expected)
+    {
+        $openingHourChecker = new OpeningHourChecker(new TimeTable([
+            new Day(Day::MONDAY, [
+                new TimePeriod('02:00', '04:00'),
+                new TimePeriod('08:00', '12:00'),
+                new TimePeriod('13:00', '14:00'),
+            ])
+        ]));
+
+        $dateOverride = new DateOverride($dateTime);
+        $dateOverride->setType($type);
+
+        $openingHourChecker->addOverride($dateOverride);
+
+        $this->assertEquals($expected, $openingHourChecker->isOpenAt($dateTime));
+        $this->assertEquals(!$expected, $openingHourChecker->isClosedAt($dateTime));
     }
 
     public function testIsOpenAtDifferentTimeZone()

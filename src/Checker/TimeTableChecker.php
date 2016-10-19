@@ -174,7 +174,11 @@ class TimeTableChecker
     public function isOverridden(\DateTime $dateTime, string $type)
     {
         foreach ($this->overrides as $override) {
-            if ($override->getType() === $type && $override->isOverridden($dateTime)) {
+            if ($override->getType() !== $type) {
+                continue;
+            }
+
+            if ($override->isOverridden($dateTime)) {
                 return true;
             }
         }

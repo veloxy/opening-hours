@@ -71,12 +71,13 @@ class Day
     }
 
     /**
-     * @param TimePeriod $openingHour
+     * @param TimePeriod $timePeriod
+     *
      * @return Day
      */
-    public function addOpeningHour(TimePeriod $openingHour) : Day
+    public function addTimePeriod(TimePeriod $timePeriod) : Day
     {
-        $this->timePeriods[] = $openingHour;
+        $this->timePeriods[] = $timePeriod;
 
         return $this;
     }
