@@ -4,6 +4,7 @@
 [![Build Status][ico-travis]][link-travis]
 [![SensioLabs Insight][ico-sensio]][link-sensio]
 [![StyleCI][ico-styleci]][link-styleci]
+[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
 
 This is a small library that helps you do several checks on opening hours.
 
@@ -60,7 +61,9 @@ $checker->isOpenAt(\DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-10 12:30:
 [ico-travis]: https://img.shields.io/travis/veloxy/opening-hours/master.svg?style=flat-square
 [ico-sensio]: https://img.shields.io/sensiolabs/i/7d757865-5835-414c-9591-06ce50bb15a7.svg?maxAge=3600&style=flat-square
 [ico-styleci]: https://styleci.io/repos/70743137/shield?branch=master
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/veloxy/opening-hours.svg?style=flat-square
 
+[link-scrutinizer]: https://scrutinizer-ci.com/g/veloxy/opening-hours/code-structure
 [link-travis]: https://travis-ci.org/veloxy/opening-hours
 [link-sensio]: https://insight.sensiolabs.com/projects/7d757865-5835-414c-9591-06ce50bb15a7
 [link-styleci]: https://styleci.io/repos/70743137
