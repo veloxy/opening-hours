@@ -21,3 +21,7 @@ tools:
     external_code_coverage:
         timeout: 600
         runs: 3
+
+build:
+    environment:
+        php: '7.0.6'
