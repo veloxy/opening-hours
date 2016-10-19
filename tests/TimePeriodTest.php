@@ -3,7 +3,6 @@
 
 namespace Sourcebox\OpeningHours;
 
-
 class TimePeriodTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetFromUntil()

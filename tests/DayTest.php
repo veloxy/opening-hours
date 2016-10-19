@@ -3,7 +3,6 @@
 
 namespace Sourcebox\OpeningHours;
 
-
 class DayTest extends \PHPUnit_Framework_TestCase
 {
     public function testAddOpeningHour()
