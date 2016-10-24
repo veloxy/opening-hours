@@ -24,42 +24,100 @@ composer require sourcebox/opening-hours
  
 You can easily figure out the usage by checking out the tests, but here's a quick example:
 
+### Create a TimeTable
+
+A TimeTable contains your opening hours, it consists of an array of days that each have a set of TimePeriods.
+A day that doesn't have time periods or a day that doesn't exist in the time table is considered a closed day. 
+
 ```php
-# Create a new checker with a timetable.
-$checker = new OpeningHourChecker(new TimeTable([
-    new Day(Day::MONDAY, [
-        new TimePeriod('08:00', '12:00'),
-        new TimePeriod('13:00', '17:00'),
-    ]),
-    new Day(Day::TUESDAY, [
-        new TimePeriod('08:00', '12:00'),
-        new TimePeriod('13:00', '17:00'),
-    ]),
-    new Day(Day::WEDNESDAY, [
-        new TimePeriod('08:00', '12:00'),
-        new TimePeriod('13:00', '17:00'),
-    ]),
-    new Day(Day::THURSDAY, [
-        new TimePeriod('08:00', '12:00'),
-        new TimePeriod('13:00', '17:00'),
-    ]),
-    new Day(Day::FRIDAY, [
-        new TimePeriod('08:00', '12:00'),
-        new TimePeriod('13:00', '17:00'),
-    ]),
-    new Day(Day::SATURDAY, [
-        new TimePeriod('08:00', '12:00'),
-    ]),
-]));
+$timeTable = new TimeTable([
+   new Day(Day::MONDAY, [
+       new TimePeriod('08:00', '12:00'),
+       new TimePeriod('13:00', '17:00'),
+   ]),
+   new Day(Day::TUESDAY, [
+       new TimePeriod('08:00', '12:00'),
+       new TimePeriod('13:00', '17:00'),
+   ]),
+   new Day(Day::WEDNESDAY, [
+       new TimePeriod('08:00', '12:00'),
+       new TimePeriod('13:00', '17:00'),
+   ]),
+   new Day(Day::THURSDAY, [
+       new TimePeriod('08:00', '12:00'),
+       new TimePeriod('13:00', '17:00'),
+   ]),
+   new Day(Day::FRIDAY, [
+       new TimePeriod('08:00', '12:00'),
+       new TimePeriod('13:00', '17:00'),
+   ]),
+   new Day(Day::SATURDAY, [
+       new TimePeriod('08:00', '12:00'),
+   ]),
+]);
 
-# Check if it's open on a certain day.
-$checker->isOpenOn(Day::TUESDAY); // true
-$checker->isOpenOn(Day::SUNDAY); // false
-
-# Check if it's open on a certain date and time (2016-10-10 is on a monday).
-$checker->isOpenAt(\DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-10 10:00:00'))); // returns true
-$checker->isOpenAt(\DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-10 12:30:00'))); // returns false
+$checker = new OpeningHourChecker($timeTable);
 ```
+
+The timetable is passed to the opening hour checker so we can start checking stuff.
+
+### Basic checks
+
+The OpeningHourChecker consists of a few basic checks.
+
+#### Check if it's open on a certain day.
+
+This is a very simple check, only checks if there are time periods for the given day.
+
+```php
+$checker->isOpenOn(Day::TUESDAY); // true
+$checker->isClosedOn(Day::TUESDAY); // false
+```
+
+#### Check if it's open on a certain date and time
+
+This check will check the time periods for a given day and time.
+
+```php
+$checker->isOpenAt(\DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-10 10:00:00'))); // returns true
+$checker->isClosedAt(\DateTime::createFromFormat('Y-m-d H:i:s', '2016-10-10 10:00:00'))); // returns false
+```
+
+#### Overrides
+
+Overrides are basically exceptions to the timetable. There's two types of overrides, includes and excludes.
+Include overrides are dates that are included, exclude overrides are dates that are excluded.
+
+There are currently two override classes included.
+
+##### Example
+
+This example adds christmas date as an exclusion override, which means that christmas day is excluded from the timetable. 
+This is handy when you want your store to be closed on certain dates.
+
+```php
+$dateOverride = new DateOverride($christmasDateTime);
+$dateOverride->setType(OverrideInterface::TYPE_EXCLUDE);
+
+$openingHourChecker->addOverride($dateOverride);
+$openingHourChecker->isOpenAt($christmasDateTime); // return false
+```
+
+The reverse is also possible, say you want to open all day on black friday, regardless of opening hours. 
+You'd use the same `DateOverride` but set the type to `TYPE_INCLUDE`. Not that the overrides prioritize excludes over includes.
+
+There's also a DatePeriodOverride, which does the same as the DateOverride but for a period.
+
+```php
+$holidayPeriodStart = \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-01 00:00:00', $timezone);
+$holidayPeriodEnd = \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-10 00:00:00', $timezone);
+$holidayPeriod = new DatePeriodOverride($holidayPeriodStart, $holidayPeriodEnd);
+$holidayPeriod->setType(OverrideInterface::TYPE_EXCLUDE);
+
+$openingHourChecker->addOverride($holidayPeriod);
+```
+
+In this example, store is closed from `$holidayPeriodStart` until `$holidayPeriodEnd`. 
 
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/veloxy/opening-hours/master.svg?style=flat-square
