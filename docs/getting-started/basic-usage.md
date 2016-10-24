@@ -68,7 +68,7 @@ $checker->isClosedOn(Day::WEDNESDAY); // Returns false
 
 ### DateTime checks
 
-The following check require a `\DateTime` object because it checks if the time is between 
+The following check requires a `\DateTime` object because it checks if the time is between 
 any of the days `TimePeriod`'s
 
 Given the data from our TimeTable:
