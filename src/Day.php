@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Sourcebox\OpeningHours;
 
@@ -33,9 +34,9 @@ class Day
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getNumber(): string
+    public function getNumber(): int
     {
         return $this->number;
     }

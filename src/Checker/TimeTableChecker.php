@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Sourcebox\OpeningHours\Checker;
 
@@ -87,11 +88,11 @@ class TimeTableChecker
     /**
      * Checks if certain day has time periods.
      *
-     * @param string $dayId
+     * @param int $dayId
      *
-     * @return bool
+     * @return TimePeriod[]
      */
-    public function getTimePeriodsForDay(string $dayId)
+    public function getTimePeriodsForDay(int $dayId)
     {
         $day = $this->timeTable->getDay($dayId);
 
@@ -110,7 +111,7 @@ class TimeTableChecker
      */
     public function isDateTimeWithinDayTimePeriods(\DateTime $dateTime)
     {
-        $timePeriods = $this->getTimePeriodsForDay($dateTime->format('N'));
+        $timePeriods = $this->getTimePeriodsForDay((int) $dateTime->format('N'));
 
         foreach ($timePeriods as $timePeriod) {
             if ($this->isDateTimeBetweenTimePeriod($dateTime, $timePeriod)) {
@@ -131,13 +132,8 @@ class TimeTableChecker
      */
     public function isDateTimeBetweenTimePeriod(\DateTime $dateTime, TimePeriod $timePeriod) : bool
     {
-        if ($dateTime >= $this->createDateTimeForHour($dateTime, $timePeriod->getFrom())
-            && $dateTime <= $this->createDateTimeForHour($dateTime, $timePeriod->getUntil())
-        ) {
-            return true;
-        }
-
-        return false;
+        return $dateTime >= $this->createDateTimeForHour($dateTime, $timePeriod->getFrom())
+            && $dateTime <= $this->createDateTimeForHour($dateTime, $timePeriod->getUntil());
     }
 
     /**
@@ -158,7 +154,7 @@ class TimeTableChecker
             $this->getTimeTable()->getTimezone()
         );
 
-        $dateTime->setTime($hours, $minutes, 0);
+        $dateTime->setTime((int) $hours, (int) $minutes, 0);
 
         return $dateTime;
     }
