@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Sourcebox\OpeningHours\Override;
 
@@ -39,11 +40,7 @@ class DatePeriodOverride implements OverrideInterface
      */
     public function isOverridden(\DateTime $dateTime) : bool
     {
-        if ($dateTime >= $this->startDateTime && $dateTime <= $this->endDateTime) {
-            return true;
-        }
-
-        return false;
+        return $dateTime >= $this->startDateTime && $dateTime <= $this->endDateTime;
     }
 
     /**

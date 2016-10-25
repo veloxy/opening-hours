@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Sourcebox\OpeningHours\Override;
 
@@ -32,11 +33,7 @@ class DateOverride implements OverrideInterface
      */
     public function isOverridden(\DateTime $dateTime) : bool
     {
-        if ($dateTime->format('Y-m-d') == $this->holidayDateTime->format('Y-m-d')) {
-            return true;
-        }
-
-        return false;
+        return $dateTime->format('Y-m-d') === $this->holidayDateTime->format('Y-m-d');
     }
 
     /**
