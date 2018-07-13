@@ -14,7 +14,7 @@ This is a small library that helps you do several checks on opening hours.
 
 ## Installation
 
-You can install this library using composer, please note that it's still in development and may or may not change drastically before the first version is released.
+You can install this library using composer, note that it's still in development and may or may not change drastically before the first version is released.
 
 ```
 composer require sourcebox/opening-hours
